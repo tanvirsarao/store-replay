@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>StoreReplay Test</title>
+</head>
+<body>
+  <h1>Welcome to StoreReplay</h1>
+  <input type="text" placeholder="Type here" />
+  <button>Click Me</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/rrweb@latest/dist/rrweb.min.js"></script>
+<script>
+  const eventBuffer = [];
+
+  rrweb.record({
+    emit(event) {
+      eventBuffer.push(event);
+    }
+  });
+
+  // Send batched events every 5 seconds
+  setInterval(() => {
+    if (eventBuffer.length > 0) {
+      const eventsToSend = [...eventBuffer];
+      eventBuffer.length = 0; // Clear buffer
+
+      fetch('http://localhost:3000/api/sessions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: crypto.randomUUID(),
+          timestamp: Date.now(),
+          events: eventsToSend,
+        })
+      }).then(res => {
+        console.log('Sent events batch to server');
+      }).catch(err => {
+        console.error('Failed to send events:', err);
+      });
+    }
+  }, 5000);
+</script>
+</body>
+</html>
