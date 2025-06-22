@@ -11,4 +11,18 @@ const uploadToS3 = (params, callback) => {
   s3.upload(params, callback);
 };
 
-module.exports = { s3, uploadToS3 };
+const getS3Object = async (key) => {
+  const params = {
+    Bucket: 'storereplay-sessions',
+    Key: key,
+  };
+
+  const data = await s3.getObject(params).promise();
+  return data.Body.toString('utf-8');
+};
+
+module.exports = {
+  s3,
+  uploadToS3,
+  getS3Object,
+};

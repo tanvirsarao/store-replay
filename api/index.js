@@ -20,6 +20,7 @@ const sessionRoutes        = require('./routes/sessions')
 const analysisRoutes       = require('./routes/analysis')
 const dashboardRoutes      = require('./routes/dashboard')
 const testRoute       = require('./routes/test');
+const replayRoutes = require('./routes/replay');
 
 
 // Connect routes
@@ -27,6 +28,7 @@ app.use("/api/test", testRoute);
 app.use('/api/sessions', sessionRoutes)
 app.use('/api/analysis', analysisRoutes)
 app.use('/api/dashboard', dashboardRoutes)
+app.use('/api/session', replayRoutes);
 
 app.use((req, res, next) => {
   console.log(`📡 Incoming request: ${req.method} ${req.url}`);
