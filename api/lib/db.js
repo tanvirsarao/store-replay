@@ -1,10 +1,14 @@
 const { Client } = require("pg");
+const { URL } = require("url");
 
 const parsedURL = new URL(process.env.DATABASE_URL);
 
 const db = new Client({
-  connectionString: process.env.DATABASE_URL,
-  host: parsedURL.hostname, // ⬅️ This forces IPv4 instead of IPv6
+  user: parsedURL.username,
+  password: parsedURL.password,
+  host: parsedURL.hostname, // ✅ forces IPv4
+  port: parseInt(parsedURL.port),
+  database: parsedURL.pathname.slice(1),
   ssl: { rejectUnauthorized: false },
   connectionTimeoutMillis: 10000,
 });
