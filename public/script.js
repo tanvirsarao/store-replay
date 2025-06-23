@@ -18,7 +18,7 @@ rrweb.record({
     }
 
     if (event.type === 3 && event.data?.source === 1 && Array.isArray(event.data.positions)) {
-      const { x, y } = event.data.positions.at(-1);  // last cursor position
+      const { x, y } = event.data.positions.at(-1);
       const el = document.elementFromPoint(x, y);
       if (el) {
         metadata.tagName = el.tagName;
@@ -58,7 +58,7 @@ setInterval(() => {
     events: eventsToSend.length
   });
 
-  fetch(`${window.storeReplayConfig?.apiBase || ''}/api/session`, {
+  fetch(`${window.storeReplayConfig?.apiBase || ''}/api/sessions`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
